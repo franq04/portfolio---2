@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Frankie Tubo | Full-Stack Web Developer</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='central' font-family='Space%20Grotesk,Arial,sans-serif' font-size='28' font-weight='700' fill='white'%3EFT%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ["Space Grotesk", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+          colors: {
+            primary: {
+              600: "#2563eb",
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      color-scheme: light;
+    }
+
+    html.dark {
+      color-scheme: dark;
+    }
+
+    .bg-grid {
+      background-image:
+        radial-gradient(circle at 20% 10%, rgba(37, 99, 235, 0.12), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.12), transparent 50%),
+        linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+      background-position: center, center, top left, top left;
+    }
+
+    html.dark .bg-grid {
+      background-image:
+        radial-gradient(circle at 15% 10%, rgba(59, 130, 246, 0.18), transparent 55%),
+        radial-gradient(circle at 85% 0%, rgba(14, 116, 144, 0.28), transparent 45%),
+        linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+      background-position: center, center, top left, top left;
+    }
+
+    .nav-shadow {
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    html.dark .nav-shadow {
+      box-shadow: 0 12px 32px rgba(2, 6, 23, 0.6);
+    }
+
+    .contact-highlight {
+      animation: contactPulse 1.4s ease-out 1;
+    }
+
+    @keyframes contactPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.35);
+      }
+      70% {
+        box-shadow: 0 0 0 16px rgba(37, 99, 235, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+      }
+    }
+
+    .skill-icon {
+      position: relative;
+    }
+
+    .skill-icon::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 10px);
+      transform: translateX(-50%) translateY(6px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      color: #f8fafc;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.2);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 20;
+    }
+
+    .skill-icon::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 4px);
+      transform: translateX(-50%) translateY(6px);
+      border-width: 6px 6px 0 6px;
+      border-style: solid;
+      border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 19;
+    }
+
+    .skill-icon:hover::after,
+    .skill-icon:focus-visible::after,
+    .skill-icon:hover::before,
+    .skill-icon:focus-visible::before {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    html.dark .skill-icon::after {
+      background: rgba(248, 250, 252, 0.95);
+      color: #0f172a;
+      border-color: rgba(148, 163, 184, 0.35);
+    }
+
+    html.dark .skill-icon::before {
+      border-color: rgba(248, 250, 252, 0.95) transparent transparent transparent;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-display transition-colors duration-300">
+  <div class="fixed inset-0 -z-10 bg-grid"></div>
+
+  <header class="sticky top-0 z-40 px-6 pt-4 lg:px-10">
+    <nav id="site-nav" class="mx-auto flex max-w-6xl items-center justify-between rounded-2xl border border-slate-200/70 bg-white/70 px-4 py-3 backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors transition-shadow duration-300">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white font-semibold">FT</span>
+        <div>
+          <p class="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Portfolio</p>
+          <p class="text-lg font-semibold">Frankie Tubo</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#projects" class="hidden text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-600 transition-colors duration-300 sm:inline">Projects</a>
+        <a href="#experience" class="hidden text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-600 transition-colors duration-300 sm:inline">Experience</a>
+        <a href="#contact" class="hidden text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-600 transition-colors duration-300 sm:inline">Contact</a>
+        <button id="theme-toggle" type="button" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white/80 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-sm hover:border-primary-600 hover:text-primary-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300 dark:hover:text-primary-600 transition-colors duration-300">
+          <span id="theme-label">Dark</span>
+          <span class="h-2 w-2 rounded-full bg-primary-600"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-6 pb-16 pt-8 lg:px-10">
+    <section id="hero" class="grid gap-5 lg:grid-cols-12">
+      <div class="lg:col-span-7">
+        <div class="relative overflow-hidden rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
+          <div aria-hidden="true" class="pointer-events-none absolute -top-20 -right-20 h-52 w-52 rounded-full bg-gradient-to-br from-blue-500/25 via-cyan-400/20 to-emerald-400/20 blur-3xl"></div>
+          <div aria-hidden="true" class="pointer-events-none absolute -bottom-24 -left-24 h-52 w-52 rounded-full bg-gradient-to-br from-amber-300/20 via-emerald-400/15 to-sky-400/20 blur-3xl"></div>
+          <div class="relative z-10">
+          <p class="text-xs uppercase tracking-[0.5em] text-primary-600">Full-Stack Web Development</p>
+          <h1 class="mt-4 text-4xl font-semibold leading-tight sm:text-5xl">Frankie Tubo</h1>
+          <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">
+            BSIT graduate from Capitol University focused on building reliable, data-driven web systems. Skilled in C#, PHP, and SQL with a passion for clean interfaces and dependable backend logic. I enjoy technology and building websites, which is why I pursued IT.
+          </p>
+          <div class="mt-6 grid gap-3 sm:grid-cols-2">
+            <div class="rounded-2xl border border-slate-200/70 bg-slate-100/70 p-4 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">
+              <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">About Me</p>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                I enjoy technology and building websites that keep work simple, fast, and reliable.
+              </p>
+            </div>
+            <div class="rounded-2xl border border-slate-200/70 bg-slate-100/70 p-4 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">
+              <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Why IT</p>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                I chose IT to turn curiosity into systems that solve real operational problems.
+              </p>
+            </div>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-3 text-sm">
+            <span class="rounded-full border border-slate-200/70 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">C#</span>
+            <span class="rounded-full border border-slate-200/70 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">PHP</span>
+            <span class="rounded-full border border-slate-200/70 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">SQL</span>
+            <span class="rounded-full border border-slate-200/70 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Laravel</span>
+          </div>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="#contact" class="inline-flex items-center justify-center rounded-xl bg-primary-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition-colors duration-300 hover:bg-blue-700">Hire Me!</a>
+            <a href="#projects" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/70 px-5 py-3 text-sm font-semibold text-slate-600 transition-colors duration-300 hover:border-primary-600 hover:text-primary-600 dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:text-primary-600">View Projects</a>
+            <a href="Tubo%20-%20RESUME.pdf" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl border border-blue-600/30 bg-blue-600/10 px-5 py-3 text-sm font-semibold text-blue-600 transition-colors duration-300 hover:border-blue-600 hover:bg-blue-600/20">
+              <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+                <path d="M14 2v6h6" />
+                <path d="M9 13h6" />
+                <path d="M9 17h6" />
+              </svg>
+              View Resume
+            </a>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
+          <div class="grid gap-6">
+            <div>
+              <p class="text-sm uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Focus Areas</p>
+              <h2 class="mt-3 text-2xl font-semibold">Systems that stay stable under pressure.</h2>
+              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                Specializes in accountability features, audit trails, and interfaces that keep users aligned with real-time data.
+              </p>
+              <div class="mt-5 grid gap-3 text-sm">
+                <div class="rounded-2xl border border-slate-200/70 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Inventory and asset tracking</div>
+                <div class="rounded-2xl border border-slate-200/70 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Role-based access patterns</div>
+                <div class="rounded-2xl border border-slate-200/70 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">SQL-driven reporting</div>
+              </div>
+            </div>
+            <div class="border-t border-slate-200/70 pt-5 dark:border-slate-800/70">
+              <p class="text-sm uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Education</p>
+              <h3 class="mt-3 text-xl font-semibold">Capitol University</h3>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Bachelor of Science in Information Technology</p>
+              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Built capstone systems emphasizing data integrity, MySQL schema design, and operational accountability.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="mt-10">
+      <div class="flex items-end justify-between">
+        <div>
+          <p class="text-xs uppercase tracking-[0.5em] text-primary-600">Skills</p>
+          <h2 class="mt-3 text-3xl font-semibold">Current Technical Stack</h2>
+        </div>
+        <span class="hidden rounded-full border border-blue-600/20 bg-blue-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 sm:inline">Blue-600 Accents</span>
+      </div>
+      <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
+          <div class="flex items-center gap-3">
+            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="Laravel" aria-label="Laravel" tabindex="0">
+              <img src="https://cdn.simpleicons.org/laravel/FF2D20" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
+            </span>
+            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Laravel</p>
+          </div>
+          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
+            <div class="h-2 w-4/5 rounded-full bg-primary-600/70"></div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
+          <div class="flex items-center gap-3">
+            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="PHP" aria-label="PHP" tabindex="0">
+              <img src="https://cdn.simpleicons.org/php/777BB4" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
+            </span>
+            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">PHP</p>
+          </div>
+          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
+            <div class="h-2 w-3/4 rounded-full bg-primary-600/70"></div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
+          <div class="flex items-center gap-3">
+            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="JavaScript" aria-label="JavaScript" tabindex="0">
+              <img src="https://cdn.simpleicons.org/javascript/F7DF1E" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
+            </span>
+            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">JavaScript</p>
+          </div>
+          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
+            <div class="h-2 w-3/4 rounded-full bg-primary-600/70"></div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
+          <div class="flex items-center gap-3">
+            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="HTML/CSS" aria-label="HTML/CSS" tabindex="0">
+              <img src="https://cdn.simpleicons.org/html5/E34F26" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
+            </span>
+            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">HTML/CSS</p>
+          </div>
+          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
+            <div class="h-2 w-4/5 rounded-full bg-primary-600/70"></div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
+          <div class="flex items-center gap-3">
+            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="Tailwind CSS" aria-label="Tailwind CSS" tabindex="0">
+              <img src="https://cdn.simpleicons.org/tailwindcss/06B6D4" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
+            </span>
+            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Tailwind CSS</p>
+          </div>
+          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
+            <div class="h-2 w-4/5 rounded-full bg-primary-600/70"></div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
+          <div class="flex items-center gap-3">
+            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="C#" aria-label="C#" tabindex="0">
+              <span class="text-[11px] font-semibold text-[#512BD4]">C#</span>
+            </span>
+            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">C#</p>
+          </div>
+          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
+            <div class="h-2 w-3/4 rounded-full bg-primary-600/70"></div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
+          <div class="flex items-center gap-3">
+            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="SQL/MySQL" aria-label="SQL/MySQL" tabindex="0">
+              <img src="https://cdn.simpleicons.org/mysql/4479A1" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
+            </span>
+            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">SQL/MySQL</p>
+          </div>
+          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
+            <div class="h-2 w-4/5 rounded-full bg-primary-600/70"></div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
+          <div class="flex items-center gap-3">
+            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="Git/GitHub" aria-label="Git/GitHub" tabindex="0">
+              <img src="https://cdn.simpleicons.org/github/181717" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
+            </span>
+            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Git/GitHub</p>
+          </div>
+          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
+            <div class="h-2 w-3/4 rounded-full bg-primary-600/70"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="mt-16">
+      <div>
+        <p class="text-xs uppercase tracking-[0.5em] text-primary-600">Projects</p>
+        <h2 class="mt-3 text-3xl font-semibold">Selected Work</h2>
+      </div>
+
+      <div class="mt-6 grid gap-8">
+        <article class="rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="flex flex-wrap items-center gap-3">
+              <h3 class="text-2xl font-semibold">Capstone Inventory System</h3>
+              <span class="rounded-full border border-blue-600/20 bg-blue-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">Capstone</span>
+            </div>
+            <span class="rounded-full border border-blue-600/20 bg-blue-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">13 Screens</span>
+          </div>
+          <div class="mt-6 grid gap-8 lg:grid-cols-2">
+            <div>
+              <p class="text-slate-600 dark:text-slate-300">
+                Inventory platform powered by a structured MySQL schema with asset tracking, issuance history, and accountability flows using PAR and ICS documentation. Built to give administrators a reliable audit trail and fast reconciliation.
+              </p>
+              <div class="mt-5 flex flex-wrap items-center gap-3 text-sm">
+                <span class="rounded-full border border-slate-200/60 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Role: Full-Stack Developer</span>
+                <a href="https://github.com/franq04/Inventory-management-with-asset-tracking" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-full border border-blue-600/30 bg-blue-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 transition-colors duration-300 hover:border-blue-600 hover:bg-blue-600/20">View Repo</a>
+              </div>
+              <div class="mt-6">
+                <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Key Features</p>
+                <ul class="mt-3 grid gap-3 text-sm sm:grid-cols-2">
+                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">MySQL schema with normalized tables</li>
+                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Asset tracking and PAR/ICS accountability</li>
+                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Inventory history and status monitoring</li>
+                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Responsive user workflows for staff</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Capstone Gallery</p>
+                <div class="flex flex-wrap items-center gap-3">
+                  <span class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Tap to zoom</span>
+                  <button type="button" data-group="capstone" data-index="0" class="rounded-full border border-blue-600/20 bg-blue-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 transition-colors duration-300 hover:border-blue-600/60 hover:bg-blue-600/20">View All</button>
+                </div>
+              </div>
+              <div id="capstone-gallery" class="mt-4 grid gap-3 sm:grid-cols-2 auto-rows-[120px] sm:auto-rows-[140px] lg:auto-rows-[160px]">
+              </div>
+              <p id="capstone-gallery-meta" class="mt-3 text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400"></p>
+            </div>
+          </div>
+        </article>
+
+        <article class="rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="flex flex-wrap items-center gap-3">
+              <h3 class="text-2xl font-semibold">HLM Pharmaceutical System</h3>
+              <span class="rounded-full border border-blue-600/20 bg-blue-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">Internship</span>
+            </div>
+            <span class="rounded-full border border-blue-600/20 bg-blue-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">10 Screens</span>
+          </div>
+          <div class="mt-6 grid gap-8 lg:grid-cols-2">
+            <div>
+              <p class="text-slate-600 dark:text-slate-300">
+                Built with a C# and Blazor stack to support supply request logic, approvals, and fulfillment visibility across departments.
+              </p>
+              <div class="mt-5 flex flex-wrap items-center gap-3 text-sm">
+                <span class="rounded-full border border-slate-200/60 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Role: Full-Stack Developer</span>
+                <a href="https://github.com/franq04/HLMPHARMA" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-full border border-blue-600/30 bg-blue-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 transition-colors duration-300 hover:border-blue-600 hover:bg-blue-600/20">View Repo</a>
+              </div>
+              <div class="mt-6">
+                <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Key Features</p>
+                <ul class="mt-3 grid gap-3 text-sm">
+                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Blazor UI with role-aware screens</li>
+                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Supply request routing and status tracking</li>
+                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Inventory visibility for approvals</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Intern Gallery</p>
+                <div class="flex flex-wrap items-center gap-3">
+                  <span class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Tap to zoom</span>
+                  <button type="button" data-group="intern" data-index="0" class="rounded-full border border-blue-600/20 bg-blue-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 transition-colors duration-300 hover:border-blue-600/60 hover:bg-blue-600/20">View All</button>
+                </div>
+              </div>
+              <div id="intern-gallery" class="mt-4 grid gap-3 sm:grid-cols-2 auto-rows-[120px] sm:auto-rows-[140px] lg:auto-rows-[160px]">
+              </div>
+              <p id="intern-gallery-meta" class="mt-3 text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400"></p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" class="mt-16">
+      <div>
+        <p class="text-xs uppercase tracking-[0.5em] text-primary-600">Experience</p>
+        <h2 class="mt-3 text-3xl font-semibold">Professional Track</h2>
+      </div>
+      <div class="mt-6 grid gap-6 lg:grid-cols-12">
+        <div class="lg:col-span-8 rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 class="text-2xl font-semibold">HLM Pharmaceutical Internship</h3>
+              <p class="text-sm uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Nov 2025 - March 2026</p>
+            </div>
+            <span class="rounded-full bg-primary-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary-600">Internship</span>
+          </div>
+          <p class="mt-4 text-slate-600 dark:text-slate-300">
+            Focused on role-based access control, data persistence, and safe workflows for the HLM Pharmaceutical system. Collaborated on UI logic that kept inventory records accurate during high-volume supply requests.
+          </p>
+          <div class="mt-6 grid gap-3 text-sm sm:grid-cols-2">
+            <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Role-based access and approvals</div>
+            <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Data persistence with EF Core</div>
+            <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Supply request workflow logic</div>
+            <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">UI refinements for accuracy</div>
+          </div>
+        </div>
+        <div class="lg:col-span-4 rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
+          <p class="text-sm uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Now</p>
+          <h3 class="mt-4 text-2xl font-semibold">Available for collaboration</h3>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+            Open to full-stack roles, system maintenance, and custom web apps that require reliable data and intuitive experiences.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3 text-sm">
+            <span class="rounded-full bg-primary-600/10 px-4 py-2 text-primary-600">Full-stack delivery</span>
+            <span class="rounded-full bg-primary-600/10 px-4 py-2 text-primary-600">Database design</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="mt-16">
+      <div id="contact-card" class="rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.5em] text-primary-600">Contact</p>
+            <h2 class="mt-3 text-3xl font-semibold">Let us build something awesome together</h2>
+            <p class="mt-3 text-slate-600 dark:text-slate-300">Have an idea or need a system upgrade? I am ready to help you bring it to life.</p>
+          </div>
+          <a href="mailto:tubofrankie2@gmail.com?subject=Project%20Inquiry&body=Hi%20Frankie%2C%0A%0AI%20want%20to%20ask%20about%20a%20project.%0A%0AThanks!" class="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 via-sky-500 to-emerald-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition-colors duration-300 hover:from-blue-500 hover:via-sky-400 hover:to-emerald-400">Email Frankie</a>
+        </div>
+        <div class="mt-8 grid gap-4 text-sm sm:grid-cols-3">
+          <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">tubofrankie2@gmail.com</div>
+          <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">+63-954-399-3689</div>
+          <a href="https://github.com/franq04" target="_blank" rel="noreferrer" class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 hover:text-primary-600 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-primary-600 transition-colors duration-300">github.com/franq04</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 p-6">
+    <div class="relative w-full max-w-5xl">
+      <div class="flex items-center justify-between gap-4 pb-4 text-white">
+        <p id="lightbox-title" class="text-sm uppercase tracking-[0.3em]"></p>
+        <button id="lightbox-close" type="button" class="rounded-full border border-white/30 px-3 py-2 text-xs uppercase tracking-[0.2em] text-white hover:border-white transition-colors duration-300">Close</button>
+      </div>
+      <div class="flex items-center justify-between gap-4">
+        <button id="lightbox-prev" type="button" class="hidden h-12 w-12 items-center justify-center rounded-full border border-white/30 text-white hover:border-white transition-colors duration-300 sm:flex">Prev</button>
+        <img id="lightbox-image" src="" alt="Gallery preview" class="max-h-[70vh] w-full rounded-3xl object-contain shadow-2xl" />
+        <button id="lightbox-next" type="button" class="hidden h-12 w-12 items-center justify-center rounded-full border border-white/30 text-white hover:border-white transition-colors duration-300 sm:flex">Next</button>
+      </div>
+      <div class="mt-4 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-white sm:hidden">
+        <button id="lightbox-prev-mobile" type="button" class="rounded-full border border-white/30 px-3 py-2 text-white hover:border-white transition-colors duration-300">Prev</button>
+        <button id="lightbox-next-mobile" type="button" class="rounded-full border border-white/30 px-3 py-2 text-white hover:border-white transition-colors duration-300">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeLabel = document.getElementById("theme-label");
+    const nav = document.getElementById("site-nav");
+
+    const storedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
+      root.classList.add("dark");
+    }
+
+    const updateThemeLabel = () => {
+      themeLabel.textContent = root.classList.contains("dark") ? "Light" : "Dark";
+    };
+    updateThemeLabel();
+
+    themeToggle.addEventListener("click", () => {
+      root.classList.toggle("dark");
+      const newTheme = root.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("theme", newTheme);
+      updateThemeLabel();
+    });
+
+    const updateNavShadow = () => {
+      if (!nav) return;
+      nav.classList.toggle("nav-shadow", window.scrollY > 8);
+    };
+
+    updateNavShadow();
+    window.addEventListener("scroll", updateNavShadow);
+
+    const triggerContactHighlight = () => {
+      const contactCard = document.getElementById("contact-card");
+      if (!contactCard) return;
+      contactCard.classList.remove("contact-highlight");
+      void contactCard.offsetWidth;
+      contactCard.classList.add("contact-highlight");
+    };
+
+    const contactLinks = document.querySelectorAll('a[href="#contact"]');
+    contactLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        setTimeout(triggerContactHighlight, 300);
+      });
+    });
+
+    window.addEventListener("hashchange", () => {
+      if (window.location.hash === "#contact") {
+        triggerContactHighlight();
+      }
+    });
+
+    const galleries = {
+      capstone: {
+        name: "Capstone Inventory System",
+        count: 13,
+        path: "CapstoneImage",
+        extension: "png",
+        previewCount: 4,
+        containerId: "capstone-gallery",
+      },
+      intern: {
+        name: "HLM Pharmaceutical System",
+        count: 10,
+        path: "InternImage",
+        extension: "png",
+        previewCount: 4,
+        containerId: "intern-gallery",
+      },
+    };
+
+    const galleryState = {};
+
+    Object.entries(galleries).forEach(([key, config]) => {
+      const images = Array.from({ length: config.count }, (_, index) => {
+        return `${config.path}/${index + 1}.${config.extension}`;
+      });
+
+      galleryState[key] = {
+        name: config.name,
+        images,
+      };
+
+      const container = document.getElementById(config.containerId);
+      const previewLimit = Math.min(config.previewCount ?? images.length, images.length);
+      const previewImages = images.slice(0, previewLimit);
+      const meta = document.getElementById(`${key}-gallery-meta`);
+      if (meta) {
+        meta.textContent = `Showing ${previewLimit} of ${images.length} screens`;
+      }
+
+      const shouldFeature = previewLimit >= 5;
+
+      previewImages.forEach((src, index) => {
+        const button = document.createElement("button");
+        const isFeatured = shouldFeature && index === 0;
+        const baseClasses = "group relative overflow-hidden rounded-2xl border border-slate-200/70 bg-slate-100 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/60 dark:border-slate-800/70 dark:bg-slate-900 transition-colors duration-300";
+        const layoutClasses = isFeatured ? "sm:col-span-2 sm:row-span-2" : "";
+        button.type = "button";
+        button.className = `${baseClasses} ${layoutClasses}`.trim();
+        button.dataset.group = key;
+        button.dataset.index = String(index);
+        button.setAttribute("aria-label", `${config.name} screen ${index + 1}`);
+        button.innerHTML = `<img src="${src}" alt="${config.name} screen ${index + 1}" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" loading="lazy" />`;
+        container.appendChild(button);
+      });
+    });
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightbox-image");
+    const lightboxTitle = document.getElementById("lightbox-title");
+    const lightboxPrev = document.getElementById("lightbox-prev");
+    const lightboxNext = document.getElementById("lightbox-next");
+    const lightboxPrevMobile = document.getElementById("lightbox-prev-mobile");
+    const lightboxNextMobile = document.getElementById("lightbox-next-mobile");
+    const lightboxClose = document.getElementById("lightbox-close");
+
+    let activeGroup = "capstone";
+    let activeIndex = 0;
+
+    const updateLightbox = () => {
+      const groupData = galleryState[activeGroup];
+      if (!groupData) return;
+      const total = groupData.images.length;
+      const src = groupData.images[activeIndex];
+      lightboxImage.src = src;
+      lightboxTitle.textContent = `${groupData.name} (${activeIndex + 1}/${total})`;
+    };
+
+    const openLightbox = (group, index) => {
+      activeGroup = group;
+      activeIndex = index;
+      updateLightbox();
+      lightbox.classList.remove("hidden");
+      lightbox.classList.add("flex");
+      document.body.classList.add("overflow-hidden");
+    };
+
+    const closeLightbox = () => {
+      lightbox.classList.add("hidden");
+      lightbox.classList.remove("flex");
+      document.body.classList.remove("overflow-hidden");
+    };
+
+    const stepLightbox = (direction) => {
+      const groupData = galleryState[activeGroup];
+      if (!groupData) return;
+      const total = groupData.images.length;
+      activeIndex = (activeIndex + direction + total) % total;
+      updateLightbox();
+    };
+
+    document.addEventListener("click", (event) => {
+      const target = event.target.closest("button[data-group][data-index]");
+      if (!target) return;
+      const group = target.dataset.group;
+      const index = Number(target.dataset.index);
+      openLightbox(group, index);
+    });
+
+    lightboxClose.addEventListener("click", closeLightbox);
+    lightboxPrev.addEventListener("click", () => stepLightbox(-1));
+    lightboxNext.addEventListener("click", () => stepLightbox(1));
+    lightboxPrevMobile.addEventListener("click", () => stepLightbox(-1));
+    lightboxNextMobile.addEventListener("click", () => stepLightbox(1));
+
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (lightbox.classList.contains("hidden")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowRight") stepLightbox(1);
+      if (event.key === "ArrowLeft") stepLightbox(-1);
+    });
+  </script>
+</body>
+</html>
