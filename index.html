@@ -1,742 +1,467 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="no-js">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Frankie Tubo | Full-Stack Web Developer</title>
+  <meta name="description" content="Frankie Tubo - Full-stack web developer focused on reliable, data-driven systems, inventory workflows, and clean user experiences." />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='central' font-family='Space%20Grotesk,Arial,sans-serif' font-size='28' font-weight='700' fill='white'%3EFT%3C/text%3E%3C/svg%3E" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          fontFamily: {
-            display: ["Space Grotesk", "sans-serif"],
-            mono: ["JetBrains Mono", "monospace"],
-          },
-          colors: {
-            primary: {
-              600: "#2563eb",
-            },
-          },
-        },
-      },
-    };
+    (function () {
+      const storedTheme = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : prefersDark ? "dark" : "light";
+      document.documentElement.dataset.theme = theme;
+    })();
   </script>
-
-  <style>
-    :root {
-      color-scheme: light;
-    }
-
-    html.dark {
-      color-scheme: dark;
-    }
-
-    main p,
-    main li {
-      text-align: justify;
-      text-justify: inter-word;
-    }
-
-    input,
-    textarea,
-    select,
-    button {
-      text-align: left;
-      text-justify: auto;
-    }
-
-    .rounded-2xl p,
-    .rounded-2xl li,
-    .rounded-3xl p,
-    .rounded-3xl li {
-      text-align: left;
-      text-justify: auto;
-    }
-
-    .bg-grid {
-      background-image:
-        radial-gradient(circle at 20% 10%, rgba(37, 99, 235, 0.12), transparent 55%),
-        radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.12), transparent 50%),
-        linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
-      background-position: center, center, top left, top left;
-    }
-
-    html.dark .bg-grid {
-      background-image:
-        radial-gradient(circle at 15% 10%, rgba(59, 130, 246, 0.18), transparent 55%),
-        radial-gradient(circle at 85% 0%, rgba(14, 116, 144, 0.28), transparent 45%),
-        linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
-      background-position: center, center, top left, top left;
-    }
-
-    .nav-shadow {
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
-    }
-
-    html.dark .nav-shadow {
-      box-shadow: 0 12px 32px rgba(2, 6, 23, 0.6);
-    }
-
-    .contact-highlight {
-      animation: contactPulse 1.4s ease-out 1;
-    }
-
-    @keyframes contactPulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.35);
-      }
-      70% {
-        box-shadow: 0 0 0 16px rgba(37, 99, 235, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
-      }
-    }
-
-    .skill-icon {
-      position: relative;
-    }
-
-    .skill-icon::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      left: 50%;
-      bottom: calc(100% + 10px);
-      transform: translateX(-50%) translateY(6px);
-      opacity: 0;
-      pointer-events: none;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.95);
-      color: #f8fafc;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.2);
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      z-index: 20;
-    }
-
-    .skill-icon::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: calc(100% + 4px);
-      transform: translateX(-50%) translateY(6px);
-      border-width: 6px 6px 0 6px;
-      border-style: solid;
-      border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent;
-      opacity: 0;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      z-index: 19;
-    }
-
-    .skill-icon:hover::after,
-    .skill-icon:focus-visible::after,
-    .skill-icon:hover::before,
-    .skill-icon:focus-visible::before {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    html.dark .skill-icon::after {
-      background: rgba(248, 250, 252, 0.95);
-      color: #0f172a;
-      border-color: rgba(148, 163, 184, 0.35);
-    }
-
-    html.dark .skill-icon::before {
-      border-color: rgba(248, 250, 252, 0.95) transparent transparent transparent;
-    }
-  </style>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-display transition-colors duration-300">
-  <div class="fixed inset-0 -z-10 bg-grid"></div>
+<body>
+  <div id="preloader" aria-hidden="true">
+    <div class="preloader-spinner"></div>
+    <span class="sr-only">Loading</span>
+  </div>
 
-  <header class="sticky top-0 z-40 px-6 pt-4 lg:px-10">
-    <nav id="site-nav" class="mx-auto flex max-w-6xl items-center justify-between rounded-2xl border border-slate-200/70 bg-white/70 px-4 py-3 backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors transition-shadow duration-300">
-      <div class="flex items-center gap-3">
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white font-semibold">FT</span>
-        <div>
-          <p class="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Portfolio</p>
-          <p class="text-lg font-semibold">Frankie Tubo</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-3">
-        <a href="#projects" class="hidden text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-600 transition-colors duration-300 sm:inline">Projects</a>
-        <a href="#experience" class="hidden text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-600 transition-colors duration-300 sm:inline">Experience</a>
-        <a href="#contact" class="hidden text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-600 transition-colors duration-300 sm:inline">Contact</a>
-        <button id="theme-toggle" type="button" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white/80 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-sm hover:border-primary-600 hover:text-primary-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300 dark:hover:text-primary-600 transition-colors duration-300">
-          <span id="theme-label">Dark</span>
-          <span class="h-2 w-2 rounded-full bg-primary-600"></span>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav" id="site-nav" aria-label="Primary">
+        <a class="brand" href="#top">
+          <span class="brand-mark">FT</span>
+          <span class="brand-text">
+            <span class="brand-label">Portfolio</span>
+            <span class="brand-name">Frankie Tubo</span>
+          </span>
+        </a>
+
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">
+          Menu
         </button>
-      </div>
-    </nav>
+
+        <div class="nav-panel" id="nav-panel">
+          <div class="nav-list">
+            <a class="nav-link" href="#hero" data-section>Overview</a>
+            <a class="nav-link" href="#skills" data-section>Skills</a>
+            <a class="nav-link" href="#projects" data-section>Projects</a>
+            <a class="nav-link" href="#experience" data-section>Experience</a>
+            <a class="nav-link" href="#contact" data-section>Contact</a>
+            <span class="nav-indicator" id="nav-indicator"></span>
+          </div>
+          <div class="nav-actions">
+            <a class="button small primary" href="#contact">Hire Me</a>
+            <a class="button small outline" href="Frankie-Tubo-Resume.pdf" target="_blank" rel="noreferrer">Resume</a>
+            <button id="theme-toggle" type="button" class="theme-toggle">
+              <span id="theme-label">Dark</span>
+              <span class="theme-dot" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
   </header>
 
-  <main class="mx-auto max-w-6xl px-6 pb-16 pt-8 lg:px-10">
-    <section id="hero" class="grid gap-5 lg:grid-cols-12">
-      <div class="lg:col-span-7">
-        <div class="relative overflow-hidden rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
-          <div aria-hidden="true" class="pointer-events-none absolute -top-20 -right-20 h-52 w-52 rounded-full bg-gradient-to-br from-blue-500/25 via-cyan-400/20 to-emerald-400/20 blur-3xl"></div>
-          <div aria-hidden="true" class="pointer-events-none absolute -bottom-24 -left-24 h-52 w-52 rounded-full bg-gradient-to-br from-amber-300/20 via-emerald-400/15 to-sky-400/20 blur-3xl"></div>
-          <div class="relative z-10">
-          <p class="text-xs uppercase tracking-[0.5em] text-primary-600">Full-Stack Web Development</p>
-          <h1 class="mt-4 text-4xl font-semibold leading-tight sm:text-5xl">Frankie Tubo</h1>
-          <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">
-            BSIT graduate from Capitol University focused on building reliable, data-driven web systems. I have experience with C#, PHP, and SQL, with a focus on clean interfaces and dependable backend logic. I enjoy technology and building websites, which is why I pursued IT.
+  <main id="top">
+    <section id="hero" class="section hero">
+      <div class="container hero-grid">
+        <div class="hero-content reveal">
+          <p class="eyebrow">Full-Stack Web Developer</p>
+          <h1 class="hero-title">Frankie Tubo</h1>
+          <p class="lead">
+            BSIT graduate focused on building reliable, data-driven web systems. I specialize in PHP, Laravel, SQL, and C# to deliver
+            inventory and workflow tools that stay accurate under pressure.
           </p>
-          <div class="mt-6 grid gap-3 sm:grid-cols-2">
-            <div class="rounded-2xl border border-slate-200/70 bg-slate-100/70 p-4 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">
-              <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">About Me</p>
-              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                I like working on practical websites that keep work simple, fast, and reliable.
-              </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#contact">Hire Me</a>
+            <a class="button outline" href="#projects">View Projects</a>
+            <a class="button outline" href="Frankie-Tubo-Resume.pdf" target="_blank" rel="noreferrer">View Resume</a>
+          </div>
+          <div class="hero-tags">
+            <span class="chip">PHP</span>
+            <span class="chip">Laravel</span>
+            <span class="chip">C#</span>
+            <span class="chip">SQL</span>
+            <span class="chip">JavaScript</span>
+          </div>
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-value">2</div>
+              <div>Full-stack systems delivered</div>
             </div>
-            <div class="rounded-2xl border border-slate-200/70 bg-slate-100/70 p-4 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">
-              <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Why IT</p>
-              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                I chose IT to turn curiosity into systems that solve real operational problems.
-              </p>
+            <div class="stat-card">
+              <div class="stat-value">23+</div>
+              <div>Screens and workflows shipped</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">3</div>
+              <div>Core stacks: PHP, C#, SQL</div>
             </div>
           </div>
-          <div class="mt-5 flex flex-wrap gap-3 text-sm">
-            <span class="rounded-full border border-slate-200/70 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">C#</span>
-            <span class="rounded-full border border-slate-200/70 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">PHP</span>
-            <span class="rounded-full border border-slate-200/70 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">SQL</span>
-            <span class="rounded-full border border-slate-200/70 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Laravel</span>
-          </div>
-          <div class="mt-6 flex flex-wrap gap-3">
-            <a href="#contact" class="inline-flex items-center justify-center rounded-xl bg-primary-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition-colors duration-300 hover:bg-blue-700">Hire Me!</a>
-            <a href="#projects" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/70 px-5 py-3 text-sm font-semibold text-slate-600 transition-colors duration-300 hover:border-primary-600 hover:text-primary-600 dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:text-primary-600">View Projects</a>
-            <a href="Frankie-Tubo-Resume.pdf" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl border border-blue-600/30 bg-blue-600/10 px-5 py-3 text-sm font-semibold text-blue-600 transition-colors duration-300 hover:border-blue-600 hover:bg-blue-600/20">
-              <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
-                <path d="M14 2v6h6" />
-                <path d="M9 13h6" />
-                <path d="M9 17h6" />
-              </svg>
-              View Resume
-            </a>
-          </div>
+          <div class="hero-notes">
+            <div class="card">
+              <p class="note-title">About Me</p>
+              <p>I like turning manual processes into practical systems that keep work simple, fast, and reliable.</p>
+            </div>
+            <div class="card">
+              <p class="note-title">Why IT</p>
+              <p>I chose IT to turn curiosity into systems that reduce errors, improve visibility, and speed up decisions.</p>
+            </div>
+            <div class="card is-wide">
+              <p class="note-title">Education</p>
+              <h3 class="section-title section-title-xs">Capitol University</h3>
+              <p class="section-subtitle">Bachelor of Science in Information Technology</p>
+              <p class="section-subtitle">Built capstone systems emphasizing data integrity, MySQL schema design, and operational accountability.</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="lg:col-span-5">
-        <div class="rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
-          <div class="grid gap-6">
-            <div>
-              <p class="text-sm uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Focus Areas</p>
-              <h2 class="mt-3 text-2xl font-semibold">Systems that stay stable under pressure.</h2>
-              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
-                Specializes in accountability features, audit trails, and interfaces that keep users aligned with real-time data.
-              </p>
-              <div class="mt-5 grid gap-3 text-sm">
-                <div class="rounded-2xl border border-slate-200/70 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Inventory and asset tracking</div>
-                <div class="rounded-2xl border border-slate-200/70 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Role-based access patterns</div>
-                <div class="rounded-2xl border border-slate-200/70 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">SQL-driven reporting</div>
-              </div>
-            </div>
-            <div class="border-t border-slate-200/70 pt-5 dark:border-slate-800/70">
-              <p class="text-sm uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Education</p>
-              <h3 class="mt-3 text-xl font-semibold">Capitol University</h3>
-              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Bachelor of Science in Information Technology</p>
-              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Built capstone systems emphasizing data integrity, MySQL schema design, and operational accountability.</p>
-            </div>
+
+        <aside class="hero-side reveal">
+          <div class="card">
+            <img class="profile-image" src="assets/images/profile.jpg" alt="Frankie Tubo portrait" width="420" height="520" loading="eager" decoding="async" />
+            <p class="note-title">Focus Areas</p>
+            <h2 class="section-title section-title-sm">Systems that stay stable under pressure.</h2>
+            <p class="section-subtitle">Specialized in accountability features, audit trails, and interfaces that keep teams aligned with real-time data.</p>
+            <ul class="focus-list">
+              <li>Inventory and asset tracking</li>
+              <li>Role-based access and approvals</li>
+              <li>SQL-driven reporting</li>
+            </ul>
           </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Skills</p>
+          <h2 class="section-title">Technical Stack That Ships</h2>
+          <p class="section-subtitle">Grouped for quick scanning, with a focus on practical delivery.</p>
+        </div>
+        <div class="skills-grid">
+          <article class="card skills-card reveal">
+            <h3>Frontend</h3>
+            <p class="section-subtitle">Interface design, layout systems, and responsive UX.</p>
+            <ul class="skill-list">
+              <li class="skill-item" style="--level: 92%;">
+                <span>HTML5 & CSS3</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 85%;">
+                <span>JavaScript</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 88%;">
+                <span>Responsive Design</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 80%;">
+                <span>Bootstrap</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+            </ul>
+          </article>
+          <article class="card skills-card reveal">
+            <h3>Backend</h3>
+            <p class="section-subtitle">APIs, server-side logic, and workflow automation.</p>
+            <ul class="skill-list">
+              <li class="skill-item" style="--level: 88%;">
+                <span>PHP</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 82%;">
+                <span>Laravel</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 80%;">
+                <span>C#</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 78%;">
+                <span>Blazor</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+            </ul>
+          </article>
+          <article class="card skills-card reveal">
+            <h3>Database</h3>
+            <p class="section-subtitle">Schema design and reporting for accuracy.</p>
+            <ul class="skill-list">
+              <li class="skill-item" style="--level: 86%;">
+                <span>MySQL</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 82%;">
+                <span>SQL Queries</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 78%;">
+                <span>Schema Normalization</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+            </ul>
+          </article>
+          <article class="card skills-card reveal">
+            <h3>Tools & Tech</h3>
+            <p class="section-subtitle">Collaboration and delivery tooling.</p>
+            <ul class="skill-list">
+              <li class="skill-item" style="--level: 84%;">
+                <span>Git & GitHub</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 76%;">
+                <span>REST Workflows</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 80%;">
+                <span>Debugging & QA</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+              <li class="skill-item" style="--level: 74%;">
+                <span>Documentation</span>
+                <div class="skill-bar"><span></span></div>
+              </li>
+            </ul>
+          </article>
         </div>
       </div>
     </section>
 
-    <section id="skills" class="mt-10">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="text-xs uppercase tracking-[0.5em] text-primary-600">Skills</p>
-          <h2 class="mt-3 text-3xl font-semibold">Current Technical Stack</h2>
+    <section id="projects" class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Projects</p>
+          <h2 class="section-title">Selected Work</h2>
+          <p class="section-subtitle">Project-focused outcomes, features, and the problems solved.</p>
         </div>
-        <span class="hidden rounded-full border border-blue-600/20 bg-blue-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 sm:inline">Blue-600 Accents</span>
-      </div>
-      <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
-          <div class="flex items-center gap-3">
-            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="Laravel" aria-label="Laravel" tabindex="0">
-              <img src="https://cdn.simpleicons.org/laravel/FF2D20" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
-            </span>
-            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Laravel</p>
-          </div>
-          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
-            <div class="h-2 w-4/5 rounded-full bg-primary-600/70"></div>
-          </div>
-        </div>
-        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
-          <div class="flex items-center gap-3">
-            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="PHP" aria-label="PHP" tabindex="0">
-              <img src="https://cdn.simpleicons.org/php/777BB4" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
-            </span>
-            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">PHP</p>
-          </div>
-          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
-            <div class="h-2 w-3/4 rounded-full bg-primary-600/70"></div>
-          </div>
-        </div>
-        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
-          <div class="flex items-center gap-3">
-            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="JavaScript" aria-label="JavaScript" tabindex="0">
-              <img src="https://cdn.simpleicons.org/javascript/F7DF1E" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
-            </span>
-            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">JavaScript</p>
-          </div>
-          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
-            <div class="h-2 w-3/4 rounded-full bg-primary-600/70"></div>
-          </div>
-        </div>
-        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
-          <div class="flex items-center gap-3">
-            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="HTML/CSS" aria-label="HTML/CSS" tabindex="0">
-              <img src="https://cdn.simpleicons.org/html5/E34F26" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
-            </span>
-            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">HTML/CSS</p>
-          </div>
-          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
-            <div class="h-2 w-4/5 rounded-full bg-primary-600/70"></div>
-          </div>
-        </div>
-        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
-          <div class="flex items-center gap-3">
-            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="Tailwind CSS" aria-label="Tailwind CSS" tabindex="0">
-              <img src="https://cdn.simpleicons.org/tailwindcss/06B6D4" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
-            </span>
-            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Tailwind CSS</p>
-          </div>
-          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
-            <div class="h-2 w-4/5 rounded-full bg-primary-600/70"></div>
-          </div>
-        </div>
-        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
-          <div class="flex items-center gap-3">
-            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="C#" aria-label="C#" tabindex="0">
-              <span class="text-[11px] font-semibold text-[#512BD4]">C#</span>
-            </span>
-            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">C#</p>
-          </div>
-          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
-            <div class="h-2 w-3/4 rounded-full bg-primary-600/70"></div>
-          </div>
-        </div>
-        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
-          <div class="flex items-center gap-3">
-            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="SQL/MySQL" aria-label="SQL/MySQL" tabindex="0">
-              <img src="https://cdn.simpleicons.org/mysql/4479A1" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
-            </span>
-            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">SQL/MySQL</p>
-          </div>
-          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
-            <div class="h-2 w-4/5 rounded-full bg-primary-600/70"></div>
-          </div>
-        </div>
-        <div class="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-lg backdrop-blur transition-colors transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800/70 dark:bg-slate-900/70">
-          <div class="flex items-center gap-3">
-            <span class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:bg-slate-800/70" data-tooltip="Git/GitHub" aria-label="Git/GitHub" tabindex="0">
-              <img src="https://cdn.simpleicons.org/github/181717" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
-            </span>
-            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Git/GitHub</p>
-          </div>
-          <div class="mt-4 h-2 w-full rounded-full bg-slate-200/70 dark:bg-slate-800/70">
-            <div class="h-2 w-3/4 rounded-full bg-primary-600/70"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="projects" class="mt-16">
-      <div>
-        <p class="text-xs uppercase tracking-[0.5em] text-primary-600">Projects</p>
-        <h2 class="mt-3 text-3xl font-semibold">Selected Work</h2>
-      </div>
-
-      <div class="mt-6 grid gap-8">
-        <article class="rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
-          <div class="flex flex-wrap items-center justify-between gap-4">
-            <div class="flex flex-wrap items-center gap-3">
-              <h3 class="text-2xl font-semibold">Capstone Inventory System</h3>
-              <span class="rounded-full border border-blue-600/20 bg-blue-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">Capstone</span>
-            </div>
-            <span class="rounded-full border border-blue-600/20 bg-blue-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">13 Screens</span>
-          </div>
-          <div class="mt-6 grid gap-8 lg:grid-cols-2">
-            <div>
-              <p class="text-slate-600 dark:text-slate-300">
-                Inventory platform powered by a structured MySQL schema with asset tracking, issuance history, and accountability flows using PAR and ICS documentation. Built to give administrators a reliable audit trail and fast reconciliation.
-              </p>
-              <div class="mt-5 flex flex-wrap items-center gap-3 text-sm">
-                <span class="rounded-full border border-slate-200/60 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Role: Full-Stack Developer</span>
-                <a href="https://github.com/franq04/Inventory-management-with-asset-tracking" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-full border border-blue-600/30 bg-blue-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 transition-colors duration-300 hover:border-blue-600 hover:bg-blue-600/20">View Repo</a>
+        <div class="projects-grid">
+          <article class="card project-card reveal">
+            <div class="project-header">
+              <div>
+                <h3 class="project-title">Capstone Inventory System</h3>
+                <p class="project-meta">Capstone project focused on asset tracking and accountability.</p>
               </div>
-              <div class="mt-6">
-                <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Key Features</p>
-                <ul class="mt-3 grid gap-3 text-sm sm:grid-cols-2">
-                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">MySQL schema with normalized tables</li>
-                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Asset tracking and PAR/ICS accountability</li>
-                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Inventory history and status monitoring</li>
-                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Responsive user workflows for staff</li>
-                </ul>
+              <div class="project-tags">
+                <span class="badge">Capstone</span>
+                <span class="badge">13 Screens</span>
               </div>
             </div>
-            <div>
-              <div class="flex flex-wrap items-center justify-between gap-3">
-                <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Capstone Gallery</p>
-                <div class="flex flex-wrap items-center gap-3">
-                  <span class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Tap to zoom</span>
-                  <button type="button" data-group="capstone" data-index="0" class="rounded-full border border-blue-600/20 bg-blue-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 transition-colors duration-300 hover:border-blue-600/60 hover:bg-blue-600/20">View All</button>
+            <div class="project-body">
+              <div>
+                <p class="project-meta"><strong>Purpose:</strong> Digitize asset issuance and accountability with PAR/ICS documentation and audit-ready history.</p>
+                <div class="project-stack">
+                  <span class="chip">PHP</span>
+                  <span class="chip">Laravel</span>
+                  <span class="chip">MySQL</span>
+                  <span class="chip">Bootstrap</span>
+                  <span class="chip">JavaScript</span>
+                </div>
+                <div class="project-features">
+                  <p class="note-title">Key Features</p>
+                  <ul>
+                    <li>Normalized MySQL schema for accurate asset lifecycle tracking.</li>
+                    <li>PAR/ICS accountability flows with issuance and return logs.</li>
+                    <li>Inventory history, status monitoring, and responsive staff workflows.</li>
+                    <li>Admin dashboards with fast reconciliation views.</li>
+                  </ul>
+                </div>
+                <div class="project-challenges">
+                  <p class="note-title">Challenges Solved</p>
+                  <ul>
+                    <li>Prevented duplicate records with strict relational integrity.</li>
+                    <li>Built audit-friendly trails to reduce manual reconciliation time.</li>
+                    <li>Designed multi-role interfaces that stay clear under heavy usage.</li>
+                  </ul>
+                </div>
+                <div class="project-actions">
+                  <a class="button outline" href="https://github.com/franq04/Inventory-management-with-asset-tracking" target="_blank" rel="noreferrer">GitHub</a>
+                  <button class="button highlight" type="button" data-gallery-open="capstone">View Screens</button>
                 </div>
               </div>
-              <div id="capstone-gallery" class="mt-4 grid gap-3 sm:grid-cols-2 auto-rows-[120px] sm:auto-rows-[140px] lg:auto-rows-[160px]">
+              <div>
+                <div class="gallery-head">
+                  <div>
+                    <p class="eyebrow">Gallery</p>
+                    <p class="section-subtitle">Tap any screen to zoom.</p>
+                  </div>
+                  <button class="button ghost small" type="button" data-gallery-open="capstone">View All</button>
+                </div>
+                <div id="capstone-gallery" class="gallery-grid"></div>
+                <p id="capstone-gallery-meta" class="gallery-meta"></p>
               </div>
-              <p id="capstone-gallery-meta" class="mt-3 text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400"></p>
             </div>
-          </div>
-        </article>
+          </article>
 
-        <article class="rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
-          <div class="flex flex-wrap items-center justify-between gap-4">
-            <div class="flex flex-wrap items-center gap-3">
-              <h3 class="text-2xl font-semibold">HLM Pharmaceutical System</h3>
-              <span class="rounded-full border border-blue-600/20 bg-blue-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">Internship</span>
-            </div>
-            <span class="rounded-full border border-blue-600/20 bg-blue-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">10 Screens</span>
-          </div>
-          <div class="mt-6 grid gap-8 lg:grid-cols-2">
-            <div>
-              <p class="text-slate-600 dark:text-slate-300">
-                Built with a C# and Blazor stack to support supply request logic, approvals, and fulfillment visibility across departments.
-              </p>
-              <div class="mt-5 flex flex-wrap items-center gap-3 text-sm">
-                <span class="rounded-full border border-slate-200/60 bg-slate-100 px-4 py-2 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Role: Full-Stack Developer</span>
-                <a href="https://github.com/franq04/HLMPHARMA" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-full border border-blue-600/30 bg-blue-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 transition-colors duration-300 hover:border-blue-600 hover:bg-blue-600/20">View Repo</a>
+          <article class="card project-card reveal">
+            <div class="project-header">
+              <div>
+                <h3 class="project-title">HLM Pharmaceutical System</h3>
+                <p class="project-meta">Internship system for supply requests, approvals, and fulfillment visibility.</p>
               </div>
-              <div class="mt-6">
-                <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Key Features</p>
-                <ul class="mt-3 grid gap-3 text-sm">
-                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Blazor UI with role-aware screens</li>
-                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Supply request routing and status tracking</li>
-                  <li class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Inventory visibility for approvals</li>
-                </ul>
+              <div class="project-tags">
+                <span class="badge">Internship</span>
+                <span class="badge">10 Screens</span>
               </div>
             </div>
-            <div>
-              <div class="flex flex-wrap items-center justify-between gap-3">
-                <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Intern Gallery</p>
-                <div class="flex flex-wrap items-center gap-3">
-                  <span class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Tap to zoom</span>
-                  <button type="button" data-group="intern" data-index="0" class="rounded-full border border-blue-600/20 bg-blue-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 transition-colors duration-300 hover:border-blue-600/60 hover:bg-blue-600/20">View All</button>
+            <div class="project-body">
+              <div>
+                <p class="project-meta"><strong>Purpose:</strong> Support supply request routing, approvals, and inventory visibility across departments.</p>
+                <div class="project-stack">
+                  <span class="chip">C#</span>
+                  <span class="chip">Blazor</span>
+                  <span class="chip">EF Core</span>
+                  <span class="chip">SQL</span>
+                </div>
+                <div class="project-features">
+                  <p class="note-title">Key Features</p>
+                  <ul>
+                    <li>Role-aware screens that adapt to requester and approver needs.</li>
+                    <li>Supply request routing with status tracking and notifications.</li>
+                    <li>Inventory visibility and approval safeguards.</li>
+                  </ul>
+                </div>
+                <div class="project-challenges">
+                  <p class="note-title">Challenges Solved</p>
+                  <ul>
+                    <li>Reduced approval bottlenecks with clear status states.</li>
+                    <li>Implemented data validation to keep inventory accurate.</li>
+                    <li>Streamlined multi-department handoffs for faster fulfillment.</li>
+                  </ul>
+                </div>
+                <div class="project-actions">
+                  <a class="button outline" href="https://github.com/franq04/HLMPHARMA" target="_blank" rel="noreferrer">GitHub</a>
+                  <button class="button highlight" type="button" data-gallery-open="intern">View Screens</button>
                 </div>
               </div>
-              <div id="intern-gallery" class="mt-4 grid gap-3 sm:grid-cols-2 auto-rows-[120px] sm:auto-rows-[140px] lg:auto-rows-[160px]">
+              <div>
+                <div class="gallery-head">
+                  <div>
+                    <p class="eyebrow">Gallery</p>
+                    <p class="section-subtitle">Tap any screen to zoom.</p>
+                  </div>
+                  <button class="button ghost small" type="button" data-gallery-open="intern">View All</button>
+                </div>
+                <div id="intern-gallery" class="gallery-grid"></div>
+                <p id="intern-gallery-meta" class="gallery-meta"></p>
               </div>
-              <p id="intern-gallery-meta" class="mt-3 text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400"></p>
             </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="experience" class="mt-16">
-      <div>
-        <p class="text-xs uppercase tracking-[0.5em] text-primary-600">Experience</p>
-        <h2 class="mt-3 text-3xl font-semibold">Professional Track</h2>
-      </div>
-      <div class="mt-6 grid gap-6 lg:grid-cols-12">
-        <div class="lg:col-span-8 rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
-          <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h3 class="text-2xl font-semibold">HLM Pharmaceutical Internship</h3>
-              <p class="text-sm uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Nov 2025 - March 2026</p>
-            </div>
-            <span class="rounded-full bg-primary-600/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary-600">Internship</span>
-          </div>
-          <p class="mt-4 text-slate-600 dark:text-slate-300">
-            Focused on role-based access control, data persistence, and safe workflows for the HLM Pharmaceutical system. Collaborated on UI logic that kept inventory records accurate during high-volume supply requests.
-          </p>
-          <div class="mt-6 grid gap-3 text-sm sm:grid-cols-2">
-            <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Role-based access and approvals</div>
-            <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Data persistence with EF Core</div>
-            <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">Supply request workflow logic</div>
-            <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">UI refinements for accuracy</div>
-          </div>
-        </div>
-        <div class="lg:col-span-4 rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
-          <p class="text-sm uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Now</p>
-          <h3 class="mt-4 text-2xl font-semibold">Available for collaboration</h3>
-          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
-            Open to full-stack roles, system maintenance, and custom web apps that require reliable data and intuitive experiences. Also open to data entry and virtual assistant roles, eager to learn even without formal experience.
-          </p>
-          <div class="mt-6 flex flex-wrap gap-3 text-sm">
-            <span class="rounded-full bg-primary-600/10 px-4 py-2 text-primary-600">Full-stack delivery</span>
-            <span class="rounded-full bg-primary-600/10 px-4 py-2 text-primary-600">Database design</span>
-          </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="mt-16">
-      <div id="contact-card" class="rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-lg backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70 transition-colors duration-300">
-        <div class="flex flex-wrap items-center justify-between gap-4">
+    <section id="experience" class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Experience</p>
+          <h2 class="section-title">Professional Track</h2>
+          <p class="section-subtitle">Hands-on delivery with data integrity and workflow reliability in mind.</p>
+        </div>
+        <div class="experience-grid">
+          <article class="card experience-main reveal">
+            <div class="project-header">
+              <div>
+                <h3 class="project-title">HLM Pharmaceutical Internship</h3>
+                <p class="project-meta">Nov 2025 - March 2026</p>
+              </div>
+              <span class="badge">Internship</span>
+            </div>
+            <p class="project-meta">
+              Focused on role-based access control, data persistence, and safe workflows for the HLM Pharmaceutical system. Collaborated on
+              UI logic that kept inventory records accurate during high-volume supply requests.
+            </p>
+            <ul class="project-features">
+              <li>Role-based access and approvals with audit-ready history.</li>
+              <li>Data persistence using EF Core and structured validation.</li>
+              <li>Supply request workflows tuned for accuracy and speed.</li>
+              <li>UI refinements that reduced user error rates.</li>
+            </ul>
+          </article>
+          <aside class="card experience-side reveal">
+            <p class="note-title">Now</p>
+            <h3 class="section-title section-title-xs">Available for collaboration</h3>
+            <p class="section-subtitle">
+              Open to full-stack roles, system maintenance, and custom web apps that require reliable data and intuitive experiences.
+            </p>
+            <div class="project-stack">
+              <span class="chip">Full-stack delivery</span>
+              <span class="chip">Database design</span>
+              <span class="chip">System support</span>
+            </div>
+            <div class="project-actions">
+              <a class="button primary" href="mailto:tubofrankie2@gmail.com?subject=Project%20Inquiry">Email Frankie</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <div id="contact-card" class="card contact-card reveal">
           <div>
-            <p class="text-xs uppercase tracking-[0.5em] text-primary-600">Contact</p>
-            <h2 class="mt-3 text-3xl font-semibold">Let us build something awesome together</h2>
-            <p class="mt-3 text-slate-600 dark:text-slate-300">Have an idea or need a system upgrade? I am ready to help you bring it to life.</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Also open to data entry and virtual assistant roles, eager to learn and contribute.</p>
+            <p class="eyebrow">Contact</p>
+            <h2 class="section-title">Let us build something dependable.</h2>
+            <p class="section-subtitle">Have an idea or need a system upgrade? I am ready to help bring it to life.</p>
+            <p class="section-subtitle">Also open to data entry and virtual assistant roles, eager to learn and contribute.</p>
           </div>
-          <a href="mailto:tubofrankie2@gmail.com?subject=Project%20Inquiry" class="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 via-sky-500 to-emerald-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition-colors duration-300 hover:from-blue-500 hover:via-sky-400 hover:to-emerald-400">Email Frankie</a>
-        </div>
-        <div class="mt-8 grid gap-4 text-sm sm:grid-cols-3">
-          <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">tubofrankie2@gmail.com</div>
-          <div class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">+63-954-399-3689</div>
-          <a href="https://github.com/franq04" target="_blank" rel="noreferrer" class="rounded-2xl border border-slate-200/60 bg-slate-100 px-4 py-3 text-slate-700 hover:text-primary-600 dark:border-slate-800/70 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-primary-600 transition-colors duration-300">github.com/franq04</a>
+          <div class="project-actions">
+            <a class="button primary" href="mailto:tubofrankie2@gmail.com?subject=Project%20Inquiry">Email Frankie</a>
+            <a class="button outline" href="https://github.com/franq04" target="_blank" rel="noreferrer">GitHub Profile</a>
+          </div>
+          <div class="contact-grid">
+            <div class="contact-item">tubofrankie2@gmail.com</div>
+            <div class="contact-item">+63-954-399-3689</div>
+            <a class="contact-item" href="https://github.com/franq04" target="_blank" rel="noreferrer">github.com/franq04</a>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="mx-auto max-w-6xl px-6 pb-16 lg:px-10">
-    <div class="flex flex-wrap items-center justify-between gap-4 border-t border-slate-200/70 pt-6 text-sm text-slate-600 dark:border-slate-800/70 dark:text-slate-300">
-      <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Connect</p>
-      <div class="flex flex-wrap items-center gap-3">
-        <a href="https://www.linkedin.com/in/frankie-tubo-593a3631a/" target="_blank" rel="noreferrer" aria-label="LinkedIn" data-tooltip="LinkedIn" class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/70 bg-white/70 text-slate-600 transition-colors duration-300 hover:border-primary-600 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:border-slate-800/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:text-primary-600">
-          <span class="sr-only">LinkedIn</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true" class="h-5 w-5 text-[#0A66C2]" fill="currentColor">
+  <footer class="footer">
+    <div class="container footer-top">
+      <p class="eyebrow">Connect</p>
+      <div class="social-links">
+        <a class="social-link" href="https://www.linkedin.com/in/frankie-tubo-593a3631a/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="#0A66C2">
             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.6 0 4.266 2.369 4.266 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.777 13.019H3.56V9h3.554v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
           </svg>
         </a>
-        <a href="https://www.facebook.com/profile.php?id=100072989567359" target="_blank" rel="noreferrer" aria-label="Facebook" data-tooltip="Facebook" class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/70 bg-white/70 text-slate-600 transition-colors duration-300 hover:border-primary-600 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:border-slate-800/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:text-primary-600">
-          <span class="sr-only">Facebook</span>
-          <img src="https://cdn.simpleicons.org/facebook/1877F2" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
+        <a class="social-link" href="https://www.facebook.com/profile.php?id=100072989567359" target="_blank" rel="noreferrer" aria-label="Facebook">
+          <img src="https://cdn.simpleicons.org/facebook/1877F2" alt="" loading="lazy" decoding="async" />
         </a>
-        <a href="https://www.instagram.com/franq04_/" target="_blank" rel="noreferrer" aria-label="Instagram" data-tooltip="Instagram" class="skill-icon inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/70 bg-white/70 text-slate-600 transition-colors duration-300 hover:border-primary-600 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/40 dark:border-slate-800/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:text-primary-600">
-          <span class="sr-only">Instagram</span>
-          <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="" class="h-5 w-5" loading="lazy" decoding="async" />
+        <a class="social-link" href="https://www.instagram.com/franq04_/" target="_blank" rel="noreferrer" aria-label="Instagram">
+          <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="" loading="lazy" decoding="async" />
         </a>
       </div>
     </div>
   </footer>
 
-  <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 p-6">
-    <div class="relative w-full max-w-5xl">
-      <div class="flex items-center justify-between gap-4 pb-4 text-white">
-        <p id="lightbox-title" class="text-sm uppercase tracking-[0.3em]"></p>
-        <button id="lightbox-close" type="button" class="rounded-full border border-white/30 px-3 py-2 text-xs uppercase tracking-[0.2em] text-white hover:border-white transition-colors duration-300">Close</button>
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <div class="lightbox-card">
+      <div class="lightbox-header">
+        <p id="lightbox-title" class="badge"></p>
+        <button id="lightbox-close" type="button" class="lightbox-button">Close</button>
       </div>
-      <div class="flex items-center justify-between gap-4">
-        <button id="lightbox-prev" type="button" class="hidden h-12 w-12 items-center justify-center rounded-full border border-white/30 text-white hover:border-white transition-colors duration-300 sm:flex">Prev</button>
-        <img id="lightbox-image" src="" alt="Gallery preview" class="max-h-[70vh] w-full rounded-3xl object-contain shadow-2xl" />
-        <button id="lightbox-next" type="button" class="hidden h-12 w-12 items-center justify-center rounded-full border border-white/30 text-white hover:border-white transition-colors duration-300 sm:flex">Next</button>
-      </div>
-      <div class="mt-4 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-white sm:hidden">
-        <button id="lightbox-prev-mobile" type="button" class="rounded-full border border-white/30 px-3 py-2 text-white hover:border-white transition-colors duration-300">Prev</button>
-        <button id="lightbox-next-mobile" type="button" class="rounded-full border border-white/30 px-3 py-2 text-white hover:border-white transition-colors duration-300">Next</button>
+      <img id="lightbox-image" src="" alt="Gallery preview" class="lightbox-image" />
+      <div class="lightbox-controls">
+        <button id="lightbox-prev" type="button" class="lightbox-button">Prev</button>
+        <button id="lightbox-next" type="button" class="lightbox-button">Next</button>
       </div>
     </div>
   </div>
 
-  <script>
-    const root = document.documentElement;
-    const themeToggle = document.getElementById("theme-toggle");
-    const themeLabel = document.getElementById("theme-label");
-    const nav = document.getElementById("site-nav");
+  <button id="scroll-top" type="button" aria-label="Scroll to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12l7-7 7 7" />
+      <path d="M12 5v14" />
+    </svg>
+  </button>
 
-    const storedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-      root.classList.add("dark");
-    }
-
-    const updateThemeLabel = () => {
-      themeLabel.textContent = root.classList.contains("dark") ? "Light" : "Dark";
-    };
-    updateThemeLabel();
-
-    themeToggle.addEventListener("click", () => {
-      root.classList.toggle("dark");
-      const newTheme = root.classList.contains("dark") ? "dark" : "light";
-      localStorage.setItem("theme", newTheme);
-      updateThemeLabel();
-    });
-
-    const updateNavShadow = () => {
-      if (!nav) return;
-      nav.classList.toggle("nav-shadow", window.scrollY > 8);
-    };
-
-    updateNavShadow();
-    window.addEventListener("scroll", updateNavShadow);
-
-    const triggerContactHighlight = () => {
-      const contactCard = document.getElementById("contact-card");
-      if (!contactCard) return;
-      contactCard.classList.remove("contact-highlight");
-      void contactCard.offsetWidth;
-      contactCard.classList.add("contact-highlight");
-    };
-
-    const contactLinks = document.querySelectorAll('a[href="#contact"]');
-    contactLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        setTimeout(() => {
-          triggerContactHighlight();
-        }, 300);
-      });
-    });
-
-    window.addEventListener("hashchange", () => {
-      if (window.location.hash === "#contact") {
-        triggerContactHighlight();
-      }
-    });
-
-    if (window.location.hash === "#contact") {
-      triggerContactHighlight();
-    }
-
-    const galleries = {
-      capstone: {
-        name: "Capstone Inventory System",
-        count: 13,
-        path: "CapstoneImage",
-        extension: "png",
-        previewCount: 4,
-        containerId: "capstone-gallery",
-      },
-      intern: {
-        name: "HLM Pharmaceutical System",
-        count: 10,
-        path: "InternImage",
-        extension: "png",
-        previewCount: 4,
-        containerId: "intern-gallery",
-      },
-    };
-
-    const galleryState = {};
-
-    Object.entries(galleries).forEach(([key, config]) => {
-      const images = Array.from({ length: config.count }, (_, index) => {
-        return `${config.path}/${index + 1}.${config.extension}`;
-      });
-
-      galleryState[key] = {
-        name: config.name,
-        images,
-      };
-
-      const container = document.getElementById(config.containerId);
-      const previewLimit = Math.min(config.previewCount ?? images.length, images.length);
-      const previewImages = images.slice(0, previewLimit);
-      const meta = document.getElementById(`${key}-gallery-meta`);
-      if (meta) {
-        meta.textContent = `Showing ${previewLimit} of ${images.length} screens`;
-      }
-
-      const shouldFeature = previewLimit >= 5;
-
-      previewImages.forEach((src, index) => {
-        const button = document.createElement("button");
-        const isFeatured = shouldFeature && index === 0;
-        const baseClasses = "group relative overflow-hidden rounded-2xl border border-slate-200/70 bg-slate-100 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600/60 dark:border-slate-800/70 dark:bg-slate-900 transition-colors duration-300";
-        const layoutClasses = isFeatured ? "sm:col-span-2 sm:row-span-2" : "";
-        button.type = "button";
-        button.className = `${baseClasses} ${layoutClasses}`.trim();
-        button.dataset.group = key;
-        button.dataset.index = String(index);
-        button.setAttribute("aria-label", `${config.name} screen ${index + 1}`);
-        button.innerHTML = `<img src="${src}" alt="${config.name} screen ${index + 1}" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" loading="lazy" />`;
-        container.appendChild(button);
-      });
-    });
-
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImage = document.getElementById("lightbox-image");
-    const lightboxTitle = document.getElementById("lightbox-title");
-    const lightboxPrev = document.getElementById("lightbox-prev");
-    const lightboxNext = document.getElementById("lightbox-next");
-    const lightboxPrevMobile = document.getElementById("lightbox-prev-mobile");
-    const lightboxNextMobile = document.getElementById("lightbox-next-mobile");
-    const lightboxClose = document.getElementById("lightbox-close");
-
-    let activeGroup = "capstone";
-    let activeIndex = 0;
-
-    const updateLightbox = () => {
-      const groupData = galleryState[activeGroup];
-      if (!groupData) return;
-      const total = groupData.images.length;
-      const src = groupData.images[activeIndex];
-      lightboxImage.src = src;
-      lightboxTitle.textContent = `${groupData.name} (${activeIndex + 1}/${total})`;
-    };
-
-    const openLightbox = (group, index) => {
-      activeGroup = group;
-      activeIndex = index;
-      updateLightbox();
-      lightbox.classList.remove("hidden");
-      lightbox.classList.add("flex");
-      document.body.classList.add("overflow-hidden");
-    };
-
-    const closeLightbox = () => {
-      lightbox.classList.add("hidden");
-      lightbox.classList.remove("flex");
-      document.body.classList.remove("overflow-hidden");
-    };
-
-    const stepLightbox = (direction) => {
-      const groupData = galleryState[activeGroup];
-      if (!groupData) return;
-      const total = groupData.images.length;
-      activeIndex = (activeIndex + direction + total) % total;
-      updateLightbox();
-    };
-
-    document.addEventListener("click", (event) => {
-      const target = event.target.closest("button[data-group][data-index]");
-      if (!target) return;
-      const group = target.dataset.group;
-      const index = Number(target.dataset.index);
-      openLightbox(group, index);
-    });
-
-    lightboxClose.addEventListener("click", closeLightbox);
-    lightboxPrev.addEventListener("click", () => stepLightbox(-1));
-    lightboxNext.addEventListener("click", () => stepLightbox(1));
-    lightboxPrevMobile.addEventListener("click", () => stepLightbox(-1));
-    lightboxNextMobile.addEventListener("click", () => stepLightbox(1));
-
-    lightbox.addEventListener("click", (event) => {
-      if (event.target === lightbox) {
-        closeLightbox();
-      }
-    });
-
-    window.addEventListener("keydown", (event) => {
-      if (lightbox.classList.contains("hidden")) return;
-      if (event.key === "Escape") closeLightbox();
-      if (event.key === "ArrowRight") stepLightbox(1);
-      if (event.key === "ArrowLeft") stepLightbox(-1);
-    });
-  </script>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
